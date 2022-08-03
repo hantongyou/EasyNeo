@@ -1,0 +1,23 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/easy_neo_frontend/node_modules
+/easy_neo_frontend/.pnp
+/easy_neo_frontend.pnp.js
+
+# testing
+/easy_neo_frontend/coverage
+
+# production
+/easy_neo_frontend/build
+
+# misc
+/easy_neo_frontend/.DS_Store
+/easy_neo_frontend/.env.local
+/easy_neo_frontend/.env.development.local
+/easy_neo_frontend/.env.test.local
+/easy_neo_frontend/.env.production.local
+
+/easy_neo_frontend/npm-debug.log*
+/easy_neo_frontend/yarn-debug.log*
+/easy_neo_frontend/yarn-error.log*

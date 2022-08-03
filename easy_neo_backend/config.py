@@ -1,7 +1,7 @@
 # USER_NAME、USER_PASSWD为平台用户的账号和密码
 # 用于用户验证操作
 USER_NAME = "Test"
-USER_PASSWD = "textileKG123456"
+USER_PASSWD = "123456"
 
 
 

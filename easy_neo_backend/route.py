@@ -58,9 +58,9 @@ def index():
     if reqUsr == cfg.USER_NAME and reqPasswd == cfg.USER_PASSWD:
         global db
         db = Graph(NEO4J_HOST, auth=(NEO4J_ACCOUNT, NEO4J_PASSWD))
-        return "hello " + reqUsr
+        return reqUsr
     else:
-        return "It seems like you have entered invalid username or password"
+        return 'UNAUTHORISED'
 
 @app.route('/upLoadFile',methods=['GET','POST'])
 def upLoadFile():
