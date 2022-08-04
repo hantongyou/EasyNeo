@@ -11,22 +11,30 @@ class LoadEntities extends Component {
     super(props);
     this.state = {};
   }
-  componentDidMount() {
+  async componentDidMount() {
     // this.isAuth 是否经过用户验证
-    this.isAuth = PubSub.subscribe("isAuth", (msg, data) => {
+    this.isAuth = PubSub.subscribe("isAuth", async(msg, data) => {
       this.setState(data);
-    });
-    this.fileInfo = PubSub.subscribe("fileInfo", (msg, data) => {
+      let tmp = await axios.post("/backend/fileInfo",{'isAuth':data.currentUser!=="UNAUTHORISED"&&data.currentUser?"true":"false"})
+      console.log(tmp)
       children = [];
-      for (let i = 0; i < data.field.length; i++) {
-        children.push(<Option key={data.field[i]} />);
+      for (let i = 0; i < tmp.data.length; i++) {
+        children.push(<Option key={tmp.data[i]} />);
       }
+      this.setState({children:children})
+      // console.log(children)
+    
     });
+    
+    
+      
+    
   }
   componentWillUnmount() {
     // 保持验证状态，除非刷新页面，否则该状态一直保持
     PubSub.unsubscribe(this.isAuth);
     PubSub.publish("isAuth", { currentUser: this.state.currentUser });
+    
   }
 
   handleChange = (e) => {
@@ -35,6 +43,9 @@ class LoadEntities extends Component {
   };
   loadEntities = ()=>{
     let a = document.getElementById("nodeType").value;
+    if(!a) message.warn("请填写节点类别！")
+    else if(!this.state.field) message.warn("请选择属性！")
+    else
     this.setState({"nodeType":a},async()=>{
         let req = await axios.post("/backend/addNodes",{"nodeTypes":[this.state.nodeType],"nodeAttributes":[this.state.field]})
         // 导入成功
@@ -51,8 +62,10 @@ class LoadEntities extends Component {
     // 若经过用户身份验证
     if (this.state.currentUser && this.state.currentUser !== "UNAUTHORISED")
       return (
-        <div>
+        <div style={{textAlign:"center"}}>
+            <br/>
           请选择您需要的节点类型
+          <br/>
           <br />
           <span>
             <b>节点类别选择&nbsp;&nbsp;&nbsp;&nbsp;</b>
@@ -63,6 +76,7 @@ class LoadEntities extends Component {
               style={{ width: 200 }}
             />
           </span>
+          <br/>
           <br/>
           {this.state.currentUser}，请选择您需要的数据项作为实体节点的属性
           <br />
@@ -76,12 +90,12 @@ class LoadEntities extends Component {
                 width: 200,
               }}
             >
-              {children}
+              {this.state.children}
             </Select>
           </span>
           <br />
           <br />
-          <Button type="primary" onClick={this.loadEntities}>开始导入</Button>
+          <Button type="primary" onClick={this.loadEntities}>开始节点导入</Button>
         </div>
       );
     // 未经过用户身份验证

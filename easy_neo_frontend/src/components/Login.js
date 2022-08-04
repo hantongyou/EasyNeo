@@ -47,11 +47,12 @@ class Login extends Component {
         if(!this.state.currentUser || this.state.currentUser==="UNAUTHORISED")
         return (
             <div>
-                <Input id='username' size="large" placeholder="输入您的账号" prefix={<UserOutlined />} style={{width:"50%",marginLeft:"5%"}}/>
                 <br/><br/>
-                <Input.Password id='userpasswd' placeholder="输入您的密码" style={{width:"50%",marginLeft:"5%"}}/>
+                <Input id='username' size="large" placeholder="输入您的账号" prefix={<UserOutlined />} style={{width:"50%",marginLeft:"25%"}}/>
                 <br/><br/>
-                <Button type="primary" style={{marginLeft:"27.5%"}} onClick={this.login}>登录</Button>
+                <Input.Password id='userpasswd' placeholder="输入您的密码" style={{width:"50%",marginLeft:"25%"}}/>
+                <br/><br/>
+                <Button type="primary" style={{marginLeft:"47.5%"}} onClick={this.login}>登录</Button>
             </div>
         );
         else return(<>

@@ -12,25 +12,25 @@ const props = {
 
   onChange(info) {
     const { status } = info.file;
-
     if (status !== "uploading") {
       // console.log(info.file, info.fileList);
     }
 
     if (status === "done") {
       message.success(`${info.file.name}文件上传成功`);
-      PubSub.publish("fileInfo",{
-        //数据字段
-        field:info.file.response
-    })
+      
+    //   PubSub.publish("fileInfo",{
+    //     //数据字段
+    //     field:info.file.response
+    // })
     } else if (status === "error") {
       message.error(`${info.file.name} 文件上传失败`);
     }
   },
 
-  onDrop(e) {
-    console.log("Dropped files", e.dataTransfer.files);
-  },
+  // onDrop(e) {
+  //   console.log("Dropped files", e.dataTransfer.files);
+  // },
 };
 
 class UploadFile extends Component {
@@ -46,7 +46,7 @@ class UploadFile extends Component {
   componentWillUnmount() {
     PubSub.unsubscribe(this.isAuth);
     PubSub.publish("isAuth", this.state);
-    
+   
   }
   checkData = (fileInfo) =>{
 

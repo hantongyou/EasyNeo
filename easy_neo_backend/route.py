@@ -31,12 +31,13 @@ def addRelations2Neo():
     # 此处指代 p -[r]-> q的三元组关系
     # csv文件列名即为对应的实体与关系类型
     pType = df.keys()[0]
-    rType = df.keys()[1]
+    
     qType = df.keys()[2]
     relations = []
     for idx,element in df.iterrows():
         p = db.nodes.match(pType).where("_."+pType+"="+"'"+element[0]+"'").first()
         q = db.nodes.match(qType).where("_."+qType+"="+"'"+element[2]+"'").first()
+        rType = element[1]
         r = Relationship(p,rType,q)
         relations.append(r)
         # 创建当前事务
@@ -74,6 +75,18 @@ def upLoadFile():
         return res
     except:
         return "上传错误，请重新上传"
+
+# 返回缓存区文件数据字段名列表
+@app.route('/fileInfo',methods=['GET','POST'])
+def fileInfo():
+    global df
+    isAuth = request.get_json()['isAuth']
+    print(isAuth)
+    if(isAuth=="true"):
+        res = json.dumps([key for key in df.keys()])
+        return res
+    else:
+        return "无权限，请检查"
 
 @app.route('/addNodes',methods=['GET','POST'])
 def addNodes():
